@@ -17,7 +17,7 @@ body {
   overflow-x: hidden;
 }
 
-
+/* ========== INTRO SCREEN ========== */
 .intro {
   position: fixed;
   inset: 0;
@@ -56,7 +56,7 @@ body {
   transform: scale(1.03);
 }
 
-
+/* ========== BACKGROUND (untouched) ========== */
 .bg {
   position: fixed;
   inset: 0;
@@ -93,7 +93,7 @@ body {
   gap: 1.3rem;
 }
 
-
+/* ========== SHARED GLASS CARD ========== */
 .glass-card {
   background: rgba(255, 255, 255, 0.08);
   -webkit-backdrop-filter: blur(22px) saturate(140%);
@@ -116,7 +116,7 @@ body {
   pointer-events: none;
 }
 
-
+/* ========== SUBTLE FLOAT ANIMATION ========== */
 @keyframes floatCard {
   0%, 100% { transform: translateY(0); }
   50%      { transform: translateY(-6px); }
@@ -128,9 +128,10 @@ body {
 
 .spotify-card {
   animation: floatCard 4s ease-in-out infinite;
+  animation-delay: -2s; /* offset para hindi magkasabay */
 }
 
-
+/* ========== HEADER ========== */
 .header {
   text-align: center;
 }
@@ -163,7 +164,7 @@ body {
   text-transform: uppercase;
 }
 
-
+/* ========== CARD ROW (Discord activity + Spotify) ========== */
 .card-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -188,7 +189,7 @@ body {
   background: rgba(255, 255, 255, 0.12);
 }
 
-
+/* ========== AVATAR DECORATION (Discord Shop cat ears, etc.) ========== */
 .avatar-wrap {
   position: relative;
   width: 56px;
