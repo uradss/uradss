@@ -23,7 +23,7 @@ function updateDiscord() {
       const d = data.data;
       const user = d.discord_user;
 
-      // ----- Left card: Discord username + status + activity -----
+      
       if (user) {
         document.getElementById('discord-username').textContent = user.username;
       }
@@ -33,7 +33,7 @@ function updateDiscord() {
         document.getElementById('discord-avatar').src = avatarUrl;
       }
 
-      // ----- Avatar Decoration (Discord Shop item, e.g. cat ears) -----
+     
       if (user && user.avatar_decoration_data && user.avatar_decoration_data.asset) {
         const decoUrl = `https://cdn.discordapp.com/avatar-decoration-presets/${user.avatar_decoration_data.asset}.png?size=256`;
         const decoEl = document.getElementById('discord-decoration');
@@ -63,6 +63,9 @@ function updateDiscord() {
         };
         activityEl.textContent = statusMap[d.discord_status] || 'Offline';
       }
+
+            const statusDotEl = document.getElementById('status-dot');
+      statusDotEl.className = 'status-dot ' + (d.discord_status || 'offline');
 
       // ----- Right card: live Spotify status -----
       const spotifyTrackEl = document.getElementById('spotify-track');
@@ -222,5 +225,21 @@ audio.addEventListener('error', () => {
   console.error('Audio failed. Check: music/lovergirl.mp3');
 });
 
-// Load track
+
 loadTrack(0);
+
+
+document.addEventListener('contextmenu', (e) => e.preventDefault());
+
+
+document.addEventListener('keydown', (e) => {
+  const isF12 = e.key === 'F12';
+  const isCtrlShiftI = e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i');
+  const isCtrlShiftJ = e.ctrlKey && e.shiftKey && (e.key === 'J' || e.key === 'j');
+  const isCtrlU = e.ctrlKey && (e.key === 'U' || e.key === 'u');
+
+  if (isF12 || isCtrlShiftI || isCtrlShiftJ || isCtrlU) {
+    e.preventDefault();
+    location.reload();
+  }
+});

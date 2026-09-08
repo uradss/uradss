@@ -56,7 +56,7 @@ body {
   transform: scale(1.03);
 }
 
-/* ========== BACKGROUND (untouched) ========== */
+
 .bg {
   position: fixed;
   inset: 0;
@@ -93,7 +93,7 @@ body {
   gap: 1.3rem;
 }
 
-/* ========== SHARED GLASS CARD ========== */
+
 .glass-card {
   background: rgba(255, 255, 255, 0.08);
   -webkit-backdrop-filter: blur(22px) saturate(140%);
@@ -116,7 +116,7 @@ body {
   pointer-events: none;
 }
 
-/* ========== SUBTLE FLOAT ANIMATION ========== */
+
 @keyframes floatCard {
   0%, 100% { transform: translateY(0); }
   50%      { transform: translateY(-6px); }
@@ -128,10 +128,9 @@ body {
 
 .spotify-card {
   animation: floatCard 4s ease-in-out infinite;
-  animation-delay: -2s; /* offset para hindi magkasabay */
 }
 
-/* ========== HEADER ========== */
+
 .header {
   text-align: center;
 }
@@ -164,7 +163,7 @@ body {
   text-transform: uppercase;
 }
 
-/* ========== CARD ROW (Discord activity + Spotify) ========== */
+
 .card-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -189,7 +188,7 @@ body {
   background: rgba(255, 255, 255, 0.12);
 }
 
-/* ========== AVATAR DECORATION (Discord Shop cat ears, etc.) ========== */
+
 .avatar-wrap {
   position: relative;
   width: 56px;
@@ -215,6 +214,23 @@ body {
 .avatar-decoration.show {
   display: block;
 }
+
+.status-dot {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 3px solid #1a1a1a;
+  background: #747f8d;
+  z-index: 2;
+}
+
+.status-dot.online { background: #23a55a; }
+.status-dot.idle   { background: #f0b232; }
+.status-dot.dnd    { background: #f23f43; }
+.status-dot.offline{ background: #747f8d; }
 
 .activity-info,
 .spotify-info {
@@ -322,7 +338,7 @@ body {
   fill: currentColor;
 }
 
-/* ========== VIEWS ========== */
+
 .views {
   display: flex;
   align-items: center;
@@ -337,7 +353,7 @@ body {
   height: 16px;
 }
 
-/* ========== PLAYER BAR (site background music) ========== */
+
 .player-wrap {
   display: flex;
   flex-direction: column;
@@ -352,7 +368,7 @@ body {
   gap: 0.9rem;
 }
 
-/* Image slot — drop your own picture in as player-art-img's src */
+
 .player-art {
   width: 56px;
   height: 56px;
