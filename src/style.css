@@ -479,3 +479,17 @@ body {
   .card-row { grid-template-columns: 1fr; }
   .player-bar { flex-wrap: wrap; border-radius: 24px; }
 }
+
+
+@keyframes floatCard {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+
+.activity-card {
+  animation: floatCard 4s ease-in-out infinite;
+}
+
+.spotify-card {
+  animation: floatCard 4s ease-in-out infinite;
+}
