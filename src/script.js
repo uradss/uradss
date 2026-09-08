@@ -1,10 +1,10 @@
 const DISCORD_ID = '935898416532308028';
 
 
-fetch('https://api.countapi.xyz/hit/uradss-uradss-bio/visits')
+fetch('https://countapi.mileshilliard.com/api/v1/hit/uradss-bio-unique-views')
   .then(r => r.json())
   .then(data => {
-    document.getElementById('view-count').textContent = data.value.toLocaleString();
+    document.getElementById('view-count').textContent = Number(data.value).toLocaleString();
   })
   .catch(() => {
     document.getElementById('view-count').textContent = '—';
