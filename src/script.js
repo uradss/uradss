@@ -23,7 +23,7 @@ function updateDiscord() {
       const d = data.data;
       const user = d.discord_user;
 
-      // ----- Left card: Discord username + status + activity -----
+  
       if (user) {
         document.getElementById('discord-username').textContent = user.username;
       }
@@ -54,7 +54,7 @@ function updateDiscord() {
         activityEl.textContent = statusMap[d.discord_status] || 'Offline';
       }
 
-      // ----- Right card: live Spotify status -----
+  
       const spotifyTrackEl = document.getElementById('spotify-track');
       const spotifyArtistEl = document.getElementById('spotify-artist');
       const spotifyArtWrap = document.querySelector('.spotify-art');
