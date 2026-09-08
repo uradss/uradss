@@ -23,7 +23,7 @@ function updateDiscord() {
       const d = data.data;
       const user = d.discord_user;
 
-  
+    
       if (user) {
         document.getElementById('discord-username').textContent = user.username;
       }
@@ -31,6 +31,16 @@ function updateDiscord() {
       if (user && user.avatar) {
         const avatarUrl = `https://cdn.discordapp.com/avatars/${DISCORD_ID}/${user.avatar}.png?size=256`;
         document.getElementById('discord-avatar').src = avatarUrl;
+      }
+
+      
+      if (user && user.avatar_decoration_data && user.avatar_decoration_data.asset) {
+        const decoUrl = `https://cdn.discordapp.com/avatar-decoration-presets/${user.avatar_decoration_data.asset}.png?size=256`;
+        const decoEl = document.getElementById('discord-decoration');
+        decoEl.src = decoUrl;
+        decoEl.classList.add('show');
+      } else {
+        document.getElementById('discord-decoration').classList.remove('show');
       }
 
       document.getElementById('discord-link').href = `https://discord.com/users/${DISCORD_ID}`;
@@ -54,7 +64,7 @@ function updateDiscord() {
         activityEl.textContent = statusMap[d.discord_status] || 'Offline';
       }
 
-  
+      
       const spotifyTrackEl = document.getElementById('spotify-track');
       const spotifyArtistEl = document.getElementById('spotify-artist');
       const spotifyArtWrap = document.querySelector('.spotify-art');
@@ -157,7 +167,7 @@ playBtn.addEventListener('click', (e) => {
   }
 });
 
-// Progress
+
 audio.addEventListener('timeupdate', () => {
   if (!audio.duration) return;
   const percent = (audio.currentTime / audio.duration) * 100;
@@ -169,7 +179,7 @@ audio.addEventListener('loadedmetadata', () => {
   durationEl.textContent = formatTime(audio.duration);
 });
 
-// Seek
+
 progressBar.addEventListener('click', (e) => {
   e.stopPropagation();
   if (!audio.duration) return;
@@ -178,7 +188,7 @@ progressBar.addEventListener('click', (e) => {
   audio.currentTime = percent * audio.duration;
 });
 
-// Volume
+
 volumeSlider.addEventListener('input', (e) => {
   e.stopPropagation();
   audio.volume = volumeSlider.value / 100;
@@ -200,7 +210,7 @@ document.getElementById('next-btn').addEventListener('click', (e) => {
   if (isPlaying) playMusic();
 });
 
-// Song end
+
 audio.addEventListener('ended', () => {
   currentTrack = (currentTrack + 1) % playlist.length;
   loadTrack(currentTrack);
@@ -212,5 +222,5 @@ audio.addEventListener('error', () => {
   console.error('Audio failed. Check: music/lovergirl.mp3');
 });
 
-// Load track
+
 loadTrack(0);
