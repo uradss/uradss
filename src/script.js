@@ -23,7 +23,7 @@ function updateDiscord() {
       const d = data.data;
       const user = d.discord_user;
 
-      
+
       if (user) {
         document.getElementById('discord-username').textContent = user.username;
       }
@@ -33,7 +33,7 @@ function updateDiscord() {
         document.getElementById('discord-avatar').src = avatarUrl;
       }
 
-     
+
       if (user && user.avatar_decoration_data && user.avatar_decoration_data.asset) {
         const decoUrl = `https://cdn.discordapp.com/avatar-decoration-presets/${user.avatar_decoration_data.asset}.png?size=256`;
         const decoEl = document.getElementById('discord-decoration');
@@ -64,7 +64,7 @@ function updateDiscord() {
         activityEl.textContent = statusMap[d.discord_status] || 'Offline';
       }
 
-            const statusDotEl = document.getElementById('status-dot');
+      const statusDotEl = document.getElementById('status-dot');
       statusDotEl.className = 'status-dot ' + (d.discord_status || 'offline');
 
       // ----- Right card: live Spotify status -----
@@ -140,6 +140,10 @@ function updatePlayIcon() {
 
 async function playMusic() {
   try {
+    setupVisualizer();
+    if (audioCtx && audioCtx.state === 'suspended') {
+      await audioCtx.resume();
+    }
     await audio.play();
     isPlaying = true;
     updatePlayIcon();
@@ -228,6 +232,23 @@ audio.addEventListener('error', () => {
 
 loadTrack(0);
 
+
+document.addEventListener('contextmenu', (e) => e.preventDefault());
+
+
+document.addEventListener('keydown', (e) => {
+  const isF12 = e.key === 'F12';
+  const isCtrlShiftI = e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i');
+  const isCtrlShiftJ = e.ctrlKey && e.shiftKey && (e.key === 'J' || e.key === 'j');
+  const isCtrlU = e.ctrlKey && (e.key === 'U' || e.key === 'u');
+
+  if (isF12 || isCtrlShiftI || isCtrlShiftJ || isCtrlU) {
+    e.preventDefault();
+    location.reload();
+  }
+});
+
+
 // ===== Audio Visualizer =====
 const canvas = document.getElementById('visualizer');
 const ctx = canvas.getContext('2d');
@@ -263,6 +284,19 @@ function resizeCanvas() {
 }
 window.addEventListener('resize', () => { if (visualizerReady) resizeCanvas(); });
 
+function roundRect(c, x, y, w, h, r) {
+  c.beginPath();
+  c.moveTo(x + r, y);
+  c.arcTo(x + w, y, x + w, y + h, r);
+  c.arcTo(x + w, y + h, x, y + h, r);
+  c.arcTo(x, y + h, x, y, r);
+  c.arcTo(x, y, x + w, y, r);
+  c.closePath();
+}
+
+// Smoothed bar heights (for a nicer bounce/ease instead of jumpy values)
+let barHeights = [];
+
 function drawVisualizer() {
   requestAnimationFrame(drawVisualizer);
 
@@ -272,55 +306,37 @@ function drawVisualizer() {
 
   analyser.getByteFrequencyData(dataArray);
 
-  const barCount = 40;
+  const barCount = 46;
   const step = Math.floor(bufferLength / barCount);
-  const gap = 3;
+  const gap = 2.5;
   const barWidth = (width / barCount) - gap;
-  const centerY = height / 2;
+  const minHeight = 3;
 
-  ctx.shadowBlur = 8;
-  ctx.shadowColor = 'rgba(255, 255, 255, 0.55)';
+  if (barHeights.length !== barCount) {
+    barHeights = new Array(barCount).fill(minHeight);
+  }
+
+  ctx.shadowBlur = 6;
+  ctx.shadowColor = 'rgba(255, 255, 255, 0.5)';
 
   for (let i = 0; i < barCount; i++) {
     let value = dataArray[i * step] || 0;
-    let percent = isPlaying ? value / 255 : 0.03; // idle flat line pag naka-pause
-    let barHeight = Math.max(percent * (height / 2), 1.5);
+    let percent = isPlaying ? value / 255 : 0;
+    let targetHeight = Math.max(percent * height, minHeight);
+
+ 
+    barHeights[i] += (targetHeight - barHeights[i]) * 0.35;
+    const barHeight = barHeights[i];
 
     const x = i * (barWidth + gap);
+    const y = height - barHeight;
 
-    const gradient = ctx.createLinearGradient(0, centerY - barHeight, 0, centerY + barHeight);
-    gradient.addColorStop(0, 'rgba(255,255,255,0.9)');
-    gradient.addColorStop(1, 'rgba(255,255,255,0.15)');
+    const gradient = ctx.createLinearGradient(0, y, 0, height);
+    gradient.addColorStop(0, 'rgba(255,255,255,0.95)');
+    gradient.addColorStop(1, 'rgba(255,255,255,0.35)');
     ctx.fillStyle = gradient;
 
-    // mirrored bar (up and down from center)
-    roundRect(ctx, x, centerY - barHeight, barWidth, barHeight * 2, barWidth / 2);
+    roundRect(ctx, x, y, barWidth, barHeight, barWidth / 2);
     ctx.fill();
   }
 }
-
-function roundRect(ctx, x, y, w, h, r) {
-  ctx.beginPath();
-  ctx.moveTo(x + r, y);
-  ctx.arcTo(x + w, y, x + w, y + h, r);
-  ctx.arcTo(x + w, y + h, x, y + h, r);
-  ctx.arcTo(x, y + h, x, y, r);
-  ctx.arcTo(x, y, x + w, y, r);
-  ctx.closePath();
-}
-
-
-document.addEventListener('contextmenu', (e) => e.preventDefault());
-
-
-document.addEventListener('keydown', (e) => {
-  const isF12 = e.key === 'F12';
-  const isCtrlShiftI = e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i');
-  const isCtrlShiftJ = e.ctrlKey && e.shiftKey && (e.key === 'J' || e.key === 'j');
-  const isCtrlU = e.ctrlKey && (e.key === 'U' || e.key === 'u');
-
-  if (isF12 || isCtrlShiftI || isCtrlShiftJ || isCtrlU) {
-    e.preventDefault();
-    location.reload();
-  }
-});

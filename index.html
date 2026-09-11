@@ -82,7 +82,7 @@
           </a>
     </div>
 
-    <!-- ========== VIEWS ========== -->
+
     <div class="views">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
@@ -91,61 +91,58 @@
       <span id="view-count">—</span>
     </div>
 
-    <!-- ========== PLAYER BAR (site background music) ========== -->
-<div class="player-wrap">
-  <div class="player-bar">
-    <div class="player-art">
-      <img id="player-art-img" src="src/assets/images/where.jpg" alt="" />
-      <svg class="player-art-fallback" viewBox="0 0 24 24">
-        <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
-      </svg>
-    </div>
-
-    <div class="music-info">
-      <div class="track-name" id="track-name">Where have you been</div>
-      <div class="progress-row">
-        <span class="time" id="current-time">0:00</span>
-        <div class="progress-bar" id="progress-bar">
-          <div class="progress-fill" id="progress-fill"></div>
+  
+    <div class="player-wrap">
+      <div class="player-bar">
+        <div class="player-art">
+          <img id="player-art-img" src="src/assets/images/where.jpg" alt="" />
+          <svg class="player-art-fallback" viewBox="0 0 24 24">
+            <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+          </svg>
         </div>
-        <span class="time" id="duration">0:00</span>
+
+        <div class="music-info">
+          <div class="track-name" id="track-name">Where have you been</div>
+          <div class="progress-row">
+            <span class="time" id="current-time">0:00</span>
+            <div class="progress-bar" id="progress-bar">
+              <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <span class="time" id="duration">0:00</span>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button class="ctrl-btn" id="prev-btn" aria-label="Previous">
+            <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+          </button>
+          <button class="ctrl-btn play" id="play-btn" aria-label="Play/Pause">
+            <svg id="play-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+          <button class="ctrl-btn" id="next-btn" aria-label="Next">
+            <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+          </button>
+        </div>
+
+        <audio id="audio" preload="metadata" src="src/assets/audio/your-song.mp3" crossorigin="anonymous"></audio>
+      </div>
+
+   
+      <div class="volume-row">
+        <svg class="vol-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+          <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+        </svg>
+        <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="70" aria-label="Volume" />
+      </div>
+
+ 
+      <div class="visualizer-wrap">
+        <canvas id="visualizer" class="visualizer"></canvas>
       </div>
     </div>
 
-    <div class="controls">
-      <button class="ctrl-btn" id="prev-btn" aria-label="Previous">
-        <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
-      </button>
-      <button class="ctrl-btn play" id="play-btn" aria-label="Play/Pause">
-        <svg id="play-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-      </button>
-      <button class="ctrl-btn" id="next-btn" aria-label="Next">
-        <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
-      </button>
-    </div>
-
-    <audio id="audio" preload="metadata" src="src/assets/audio/your-song.mp3"></audio>
-  </div>
-
-  <div class="volume-row">
-    <svg class="vol-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-      <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
-      <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
-    </svg>
-    <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="70" aria-label="Volume" />
-  </div>
-</div>
-    
-    <div class="volume-row">
-    ...
-    <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="70" aria-label="Volume" />
-  </div>
-
-  <div class="visualizer-wrap">
-    <canvas id="visualizer" class="visualizer"></canvas>
-  </div>
-</div>
   </div>
 
   <script src="src/script.js"></script>
