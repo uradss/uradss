@@ -110,7 +110,7 @@ const volumeSlider = document.getElementById('volume-slider');
 const trackNameEl = document.getElementById('track-name');
 
 const playlist = [
-  { name: 'Where have you been', src: 'src/assets/music/where.mp3' },
+  { name: 'Massive Attack', src: 'src/assets/music/iloveyou.mp3' },
 ];
 
 let currentTrack = 0;
