@@ -228,6 +228,87 @@ audio.addEventListener('error', () => {
 
 loadTrack(0);
 
+// ===== Audio Visualizer =====
+const canvas = document.getElementById('visualizer');
+const ctx = canvas.getContext('2d');
+
+let audioCtx, analyser, source, dataArray, bufferLength;
+let visualizerReady = false;
+
+function setupVisualizer() {
+  if (visualizerReady) return;
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  analyser = audioCtx.createAnalyser();
+  analyser.fftSize = 128;
+  analyser.smoothingTimeConstant = 0.75;
+
+  source = audioCtx.createMediaElementSource(audio);
+  source.connect(analyser);
+  analyser.connect(audioCtx.destination);
+
+  bufferLength = analyser.frequencyBinCount;
+  dataArray = new Uint8Array(bufferLength);
+  visualizerReady = true;
+
+  resizeCanvas();
+  drawVisualizer();
+}
+
+function resizeCanvas() {
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+window.addEventListener('resize', () => { if (visualizerReady) resizeCanvas(); });
+
+function drawVisualizer() {
+  requestAnimationFrame(drawVisualizer);
+
+  const width = canvas.getBoundingClientRect().width;
+  const height = canvas.getBoundingClientRect().height;
+  ctx.clearRect(0, 0, width, height);
+
+  analyser.getByteFrequencyData(dataArray);
+
+  const barCount = 40;
+  const step = Math.floor(bufferLength / barCount);
+  const gap = 3;
+  const barWidth = (width / barCount) - gap;
+  const centerY = height / 2;
+
+  ctx.shadowBlur = 8;
+  ctx.shadowColor = 'rgba(255, 255, 255, 0.55)';
+
+  for (let i = 0; i < barCount; i++) {
+    let value = dataArray[i * step] || 0;
+    let percent = isPlaying ? value / 255 : 0.03; // idle flat line pag naka-pause
+    let barHeight = Math.max(percent * (height / 2), 1.5);
+
+    const x = i * (barWidth + gap);
+
+    const gradient = ctx.createLinearGradient(0, centerY - barHeight, 0, centerY + barHeight);
+    gradient.addColorStop(0, 'rgba(255,255,255,0.9)');
+    gradient.addColorStop(1, 'rgba(255,255,255,0.15)');
+    ctx.fillStyle = gradient;
+
+    // mirrored bar (up and down from center)
+    roundRect(ctx, x, centerY - barHeight, barWidth, barHeight * 2, barWidth / 2);
+    ctx.fill();
+  }
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
+
 
 document.addEventListener('contextmenu', (e) => e.preventDefault());
 
